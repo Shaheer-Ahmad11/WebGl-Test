@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <link rel="shortcut icon" href="favicon.ico">
-    <title>Luv Gpt Webgl</title>
+    <title>Luv-GPT-web</title>
     <style>
         html {
             box-sizing: border-box;
@@ -137,22 +137,19 @@
         var db = indexedDB.open("dummy_indexdb", 1); // iOS 14.6 fix; the call to open indexdb hangs forever otherwise
 
         const buildUrl = "Build";
-        const loaderUrl = buildUrl + "/cf140ced47f901c80e271718da7760c2.loader.js";
+        const loaderUrl = buildUrl + "/6263a1bc954e9a66b86e5cee27dd0f55.loader.js";
         const config = {
-            dataUrl: buildUrl + "/b57ad21bbae8220128005473ca875faf.data.br",
-            frameworkUrl: buildUrl + "/3c578f511129f8c4b801abc29a11ae21.framework.js.br",
-            codeUrl: buildUrl + "/7b2be795e95c8870d3ff83adcc71968f.wasm.br",
+            dataUrl: buildUrl + "/01341cfb4dfcd3469eed46eb7d6cbb18.data.unityweb",
+            frameworkUrl: buildUrl + "/f32c134fc72bf0b8f6fc247a06df6555.framework.js.unityweb",
+            codeUrl: buildUrl + "/6da44f6ebffa2d8e108adce00d77eaa1.wasm.unityweb",
             streamingAssetsUrl: "StreamingAssets",
             companyName: "DefaultCompany",
-            productName: "Luv Gpt Webgl",
-            productVersion: "0.1",
+            productName: "Luv-GPT-web",
+            productVersion: "0.1.0",
         //Useful when used along with Filename as Hashes option
             cacheControl: function (url) {
             // typically includes: .data, .bundle, .zpt
-            if (url.match(/\.data/) || url.match(/\.bundle/) || url.match(/\.zpt/)) {
-             return "immutable";
-}
-   
+            ZAPPAR_WEBGL_CACHING   
             if (url.match(/\.mp4/) || url.match(/\.custom/) || url.match(/\.zbin/)) {
                 return "immutable";
             }   
@@ -184,7 +181,7 @@
         //script.onload = () => { CreateUnityLoader();   };
         document.body.appendChild(script);
 
-        window.zappar.permission_request_ui_promise().then(WaitForZCVLoad);
+        ZAPPAR_PERMISSIONS_IMPLEMENTATION
 
         function WaitForZCVLoad() {
             if (zappar.loaded()) {
