@@ -1,49 +1,40 @@
-<!-- Zappar WebGL template for Unity 2020 and above versions -->
-<!-- NFYNT -->
+<!--Full Screen template -->
 <!DOCTYPE html>
 <html lang="en-us">
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <link rel="shortcut icon" href="favicon.ico">
     <title>Luv Gpt Webgl</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <style>
-        html {
-            box-sizing: border-box;
-        }
-
-        *,
-        *:before,
-        *:after {
-            box-sizing: inherit;
-        }
-
-        html,
-        body {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-        }
-
-        canvas {
-            display: block;
-        }
-
-        body {
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: fixed;
+            touch-action: none;
         }
 
         #unity-container {
+            position: absolute;
             width: 100%;
             height: 100%;
+            background: #231F20;
         }
 
         #unity-canvas {
             width: 100%;
             height: 100%;
-
-            background: #231F20;
+            display: block;
         }
 
         #loading-cover {
@@ -52,159 +43,167 @@
             left: 0;
             width: 100%;
             height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        #unity-loading-bar {
-            flex: 1 1 auto;
+            background: #231F20;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            z-index: 10;
+        }
+
+        #unity-loading-bar {
+            width: 80%;
+            max-width: 300px;
+            margin-top: 20px;
         }
 
         #unity-progress-bar-empty {
-            width: 80%;
-            height: 24px;
-            margin: 10px 20px 20px 10px;
-            text-align: left;
-            border: 1px solid white;
-            padding: 2px;
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            overflow: hidden;
         }
 
         #unity-progress-bar-full {
             width: 0%;
             height: 100%;
-            background: white;
-        }
-
-        .light #unity-progress-bar-empty {
-            border-color: black;
-        }
-
-        .light #unity-progress-bar-full {
-            background: black;
-        }
-
-        .spinner,
-        .spinner:after {
-            border-radius: 50%;
-            width: 5em;
-            height: 5em;
+            background: #ffffff;
+            transition: width 0.1s;
         }
 
         .spinner {
-            margin: 10px;
-            font-size: 10px;
-            position: relative;
-            text-indent: -9999em;
-            border-top: 1.1em solid rgba(255, 255, 255, 0.2);
-            border-right: 1.1em solid rgba(255, 255, 255, 0.2);
-            border-bottom: 1.1em solid rgba(255, 255, 255, 0.2);
-            border-left: 1.1em solid #ffffff;
-            transform: translateZ(0);
-            animation: spinner-spin 1.1s infinite linear;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            border-top-color: #ffffff;
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 20px;
         }
 
-        @keyframes spinner-spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
+
+      
+
+        /* Mobile specific styles */
+        .unity-mobile #unity-canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        
     </style>
 </head>
-
-<body class="dark">
+<body>
     <div id="unity-container" class="unity-desktop">
-        <canvas id="unity-canvas"></canvas>
+        <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
+        
     </div>
-    <div id="loading-cover" style="display:none;">
+    <div id="loading-cover">
+        <div class="spinner"></div>
         <div id="unity-loading-bar">
-            <div id="unity-progress-bar-empty" style="display: none;">
+            <div id="unity-progress-bar-empty">
                 <div id="unity-progress-bar-full"></div>
             </div>
-            <div class="spinner"></div>
         </div>
     </div>
-    <script type="text/javascript" src="https://libs.zappar.com/zappar-cv/2.1.9/zappar-cv.js"></script>
-    <script>
-        var db = indexedDB.open("dummy_indexdb", 1); // iOS 14.6 fix; the call to open indexdb hangs forever otherwise
 
-        const buildUrl = "Build";
-        const loaderUrl = buildUrl + "/713507d63466de6e0a3a3fa6bd43676d.loader.js";
-        const config = {
-            dataUrl: buildUrl + "/cf19020307c8b457422910c20b1bac11.data.gz",
-            frameworkUrl: buildUrl + "/cf5bf2e11a3d9e5efd5de42198503f70.framework.js.gz",
-            codeUrl: buildUrl + "/1b8a4f478ffb0a983bbe2f2f6f728340.wasm.gz",
+    <script>
+        // Configuration - replace placeholders with your actual filenames
+        var buildUrl = "Build";
+        var loaderUrl = buildUrl + "/911641bc57f8301d439f7ea2c75e1c0f.loader.js";
+        var config = {
+            dataUrl: buildUrl + "/bc0ee496f88b6d179a653c9ee75ed0e2.data",
+            frameworkUrl: buildUrl + "/cf5bf2e11a3d9e5efd5de42198503f70.framework.js",
+            codeUrl: buildUrl + "/b83388f790e2633cdcdcfa49399e109a.wasm",
             streamingAssetsUrl: "StreamingAssets",
             companyName: "DefaultCompany",
             productName: "Luv Gpt Webgl",
             productVersion: "0.1",
-        //Useful when used along with Filename as Hashes option
-            cacheControl: function (url) {
-            // typically includes: .data, .bundle, .zpt
-            ZAPPAR_WEBGL_CACHING   
-            if (url.match(/\.mp4/) || url.match(/\.custom/) || url.match(/\.zbin/)) {
-                return "immutable";
-            }   
-            // Disable explicit caching for all other files.
-            // Note: the default browser cache may cache them anyway.
-            return "no-store";
-            },
+            devicePixelRatio: 1
         };
 
-        const container = document.querySelector("#unity-container");
-        const canvas = document.querySelector("#unity-canvas");
-        const loadingCover = document.querySelector("#loading-cover");
-        const progressBarEmpty = document.querySelector("#unity-progress-bar-empty");
-        const progressBarFull = document.querySelector("#unity-progress-bar-full");
-        const spinner = document.querySelector('.spinner');
+        // DOM elements
+        var container = document.querySelector("#unity-container");
+        var canvas = document.querySelector("#unity-canvas");
+        var loadingCover = document.querySelector("#loading-cover");
+        var progressBarFull = document.querySelector("#unity-progress-bar-full");
+        var spinner = document.querySelector(".spinner");
+        //var fullscreenButton = document.querySelector("#fullscreen-button");
 
-        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        // Check if mobile device
+        var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        if (isMobile) {
             container.className = "unity-mobile";
-            //config.matchWebGLToCanvasSize = false;    
-            //set devicePixelRatio=1; to avoid draining fillrate performance on mobile and override low DPI mode
-            config.devicePixelRatio = window.devicePixelRatio;
+            // Adjust pixel ratio for better mobile performance
+            config.devicePixelRatio = Math.min(window.devicePixelRatio, 2);
+            
+            // Prevent touch scrolling
+            document.body.addEventListener('touchmove', function(e) {
+                e.preventDefault();
+            }, { passive: false });
+        } else {
+            // Show fullscreen button for desktop
+           // fullscreenButton.style.display = "block";
         }
-        loadingCover.style.display = "";
 
-        window.zappar = ZCV.initialize();
-
-        const script = document.createElement("script");
-        script.src = loaderUrl;
-        //script.onload = () => { CreateUnityLoader();   };
-        document.body.appendChild(script);
-
-        ZAPPAR_PERMISSIONS_IMPLEMENTATION
-
-        function WaitForZCVLoad() {
-            if (zappar.loaded()) {
-                CreateUnityLoader();
-                return;
+        // Fullscreen functionality
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                canvas.requestFullscreen().catch(err => {
+                    console.error(`Fullscreen error: ${err.message}`);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
             }
-            setTimeout(WaitForZCVLoad, 500);
         }
 
-        function CreateUnityLoader() {
-            createUnityInstance(canvas, config, (progress) => {
-                spinner.style.display = "none";
-                progressBarEmpty.style.display = "";
+        // Auto fullscreen on desktop after user interaction
+        function initFullscreen() {
+            if (!isMobile) {
+                document.addEventListener('click', function initialClick() {
+                    //toggleFullscreen();
+                    document.removeEventListener('click', initialClick);
+                }, { once: true });
+            }
+        }
+
+        // Handle window resize
+        function onWindowResize() {
+            if (window.unityInstance) {
+              //  unityInstance.Module.SetCanvasSize(window.innerWidth, window.innerHeight);
+            }
+        }
+
+        // Initialize the game
+        loadingCover.style.display = "flex";
+        
+        var script = document.createElement("script");
+        script.src = loaderUrl;
+        script.onload = function() {
+            createUnityInstance(canvas, config, function(progress) {
                 progressBarFull.style.width = `${100 * progress}%`;
-            }).then((unityInstance) => {
+                if (progress === 1) {
+                    spinner.style.display = "none";
+                }
+            }).then(function(unityInstance) {
                 loadingCover.style.display = "none";
-                window.uarGameInstance = unityInstance;
-            }).catch((message) => {
+                window.unityInstance = unityInstance;
+                onWindowResize();
+                initFullscreen();
+                
+                // Handle browser resizing
+                window.addEventListener('resize', onWindowResize);
+            }).catch(function(message) {
                 alert(message);
             });
-        }
-
+        };
+        document.body.appendChild(script);
     </script>
 </body>
-
 </html>
